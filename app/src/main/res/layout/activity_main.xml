@@ -18,14 +18,14 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <View
+<!--            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@android:color/holo_blue_light"/>
+                android:background="@android:color/holo_blue_light"/>-->
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="64dp"/>
 
         </LinearLayout>
 

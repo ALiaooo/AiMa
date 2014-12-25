@@ -1,4 +1,4 @@
-package com.app.aliao.aima.activity;
+package com.app.aliao.aima.activity.base;
 
 import android.support.v7.app.ActionBarActivity;
 
