@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.app.aliao.aima.R;
@@ -42,5 +43,14 @@ public class MainActivity extends BaseActivity {
             title.setText(mTitleId[i]);
             mTabHost.addTab(mTabHost.newTabSpec(getString(mTitleId[i])).setIndicator(view), mContentFragment[i], null);
         }
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+
+            }
+        });
     }
+
+
 }
