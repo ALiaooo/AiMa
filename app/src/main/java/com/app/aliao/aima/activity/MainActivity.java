@@ -1,8 +1,7 @@
 package com.app.aliao.aima.activity;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.app.aliao.aima.R;
 import com.app.aliao.aima.activity.base.BaseActivity;
 import com.app.aliao.aima.activity.news.fragment.NewsViewPagerFragment;
+import com.app.aliao.aima.utils.L;
 
 /**
  * Created by ALiao on 2014/12/24.
@@ -47,9 +47,15 @@ public class MainActivity extends BaseActivity {
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+                L.d("tabId = "+tabId);
+                if (tabId.equals("")){
 
+                }else if(tabId.equals("")){
+
+                }
             }
         });
+
     }
 
 

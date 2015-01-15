@@ -3,8 +3,19 @@
     android:layout_height="match_parent"
     tools:context="com.app.aliao.aima.activity.news.fragment.NewsViewPagerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_news"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagertab_news"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        </android.support.v4.view.PagerTabStrip>
+
+        </android.support.v4.view.ViewPager>
+
 
 </FrameLayout>

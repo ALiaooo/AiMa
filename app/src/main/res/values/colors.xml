@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="main_green">#40AA53</color>
+    <color name="main_gray">#9A9A9A</color>
+    <color name="main_black">#353535</color>
     <color name="primarybar_background">#FCFCFC</color>
+    <color name="primarybar_split_color">#D6D6D6</color>
+    <color name="indicator_underline">#DADADA</color>
+    <color name="indicator">@color/main_green</color>
+    <color name="tab_strip_text_selected">@color/main_green</color>
+    <color name="tab_strip_text_unselected">@color/main_black</color>
 </resources>
