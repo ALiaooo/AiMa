@@ -18,4 +18,8 @@
     <string name="tab_title_news_blog">最新博客</string>
     <string name="tab_title_news_recommend">推荐阅读</string>
 
+    <string name="frame_title_news_lastest">最新资讯</string>
+    <string name="frame_title_news_blog">最新博客</string>
+    <string name="frame_title_news_recommend">推荐阅读</string>
+
 </resources>

@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.aliao.aima.R;
 import com.app.aliao.aima.utils.L;
 
@@ -27,7 +32,9 @@ public class SplashActivity extends ActionBarActivity {
         //三秒动画
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
+
 
 
     @Override
