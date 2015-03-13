@@ -1,5 +1,7 @@
 package com.app.aliao.aima.news.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -32,6 +35,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -42,6 +48,7 @@ public class NewsFragment extends Fragment{
     private SwipeRefreshLayout mRefreshLayout;
     private ListView mListView;
     private RequestQueue mRequestQueue;
+    private WebView mWebView;
     String mWikiSearchURL = "http://zh.wikipedia.org/w/api.php?action=opensearch&search=Android";
     String mWikiSearchURL2 = "http://eh.wikipedia.org/w/api.php?action=query&prop=revision&rvprop=content&titles=Android&form=json";
 
@@ -49,14 +56,33 @@ public class NewsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pull_refresh_listview, null);
         initViews(view);
-        requestDatas();
-        requestDataUseHttpClient();
-        requestDataUseURLConnection();
+//        requestDatas();
+//        requestDataUseHttpClient();
+//        requestDataUseURLConnection();
         return view;
     }
 
     private void requestDataUseURLConnection() {
-
+        try {
+            URL url = new URL("");
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            InputStream inputStream = null;
+            try {
+                inputStream = connection.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                connection.disconnect();
+            }
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -137,7 +163,26 @@ public class NewsFragment extends Fragment{
 
         mListView = (ListView) view.findViewById(R.id.listview_common);
 
+        //webview相关设置
+        mWebView = (WebView) view.findViewById(R.id.webview);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.loadUrl("file:///android_asset/index.html");   //HTML文件存放在assets文件夹中
+//        添加一个对象, 让JS可以访问该对象的方法, 该对象中也可以调用JS中的方法
+        mWebView.addJavascriptInterface(new Contact(), "contact");
 
+    }
+
+    private final class Contact{
+        //JavaScript调用此方法拨打电话
+        public void call(String phone){
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phone)));
+        }
+        //HTML调用此方法传递数据
+        public void showContact(){
+            String json = "[{\"name\":\"zxx\", \"amount\":\"9999999\", \"phone\":\"18600012345\"}]";
+            // 调用JS中的方法
+            mWebView.loadUrl("javascript:show('" + json + "')");
+        }
     }
 
     private void requestDatas() {
