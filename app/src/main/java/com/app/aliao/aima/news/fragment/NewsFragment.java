@@ -1,7 +1,10 @@
 package com.app.aliao.aima.news.fragment;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,8 +12,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.ZoomButtonsController;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -159,6 +165,9 @@ public class NewsFragment extends Fragment{
     }
 
     private void initViews(View view) {
+
+        L.d("initViews thread id = "+Thread.currentThread().getId());
+
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layout_swipe_refresh);
 
         mListView = (ListView) view.findViewById(R.id.listview_common);
@@ -166,9 +175,42 @@ public class NewsFragment extends Fragment{
         //webview相关设置
         mWebView = (WebView) view.findViewById(R.id.webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.loadUrl("file:///android_asset/index.html");   //HTML文件存放在assets文件夹中
+/*        mWebView.loadUrl("file:///android_asset/index.html");   //HTML文件存放在assets文件夹中
 //        添加一个对象, 让JS可以访问该对象的方法, 该对象中也可以调用JS中的方法
-        mWebView.addJavascriptInterface(new Contact(), "contact");
+        mWebView.addJavascriptInterface(new Contact(), "contact");*/
+
+        mWebView.loadUrl("file:///android_asset/showtoast.html");   //HTML文件存放在assets文件夹中
+        mWebView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
+
+        //GET http://www.oschina.net/action/api/news_detail?id=60382
+        initWebViews(mWebView);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void initWebViews(WebView webView) {
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultFontSize(15);
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        int sysVersion = Build.VERSION.SDK_INT;
+        if (sysVersion >= 11) {
+            settings.setDisplayZoomControls(false);
+        } else {
+            ZoomButtonsController zbc = new ZoomButtonsController(webView);
+            zbc.getZoomControls().setVisibility(View.GONE);
+        }
+    }
+
+
+    public interface OnWebViewImageListener {
+
+        /**
+         * 点击webview上的图片，传入该缩略图的大图Url
+         * @param bigImageUrl
+         */
+        void onImageClick(String bigImageUrl);
 
     }
 
@@ -178,10 +220,26 @@ public class NewsFragment extends Fragment{
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phone)));
         }
         //HTML调用此方法传递数据
-        public void showContact(){
+        public void showcontacts(){
             String json = "[{\"name\":\"zxx\", \"amount\":\"9999999\", \"phone\":\"18600012345\"}]";
             // 调用JS中的方法
             mWebView.loadUrl("javascript:show('" + json + "')");
+            L.d("javascript:show thread id = "+Thread.currentThread().getId());
+        }
+    }
+
+    public class WebAppInterface{
+        //绑定到你的Javascript的对象在另一个线程中运行，而不是在创建它的线程中运行。
+        Context mContext;
+
+        WebAppInterface(Context c){
+            mContext = c;
+        }
+
+        public void showToast(String toast){
+            Toast.makeText(mContext,toast,Toast.LENGTH_LONG).show();
+
+            L.d("javascript:showToast thread id = "+Thread.currentThread().getId());
         }
     }
 
